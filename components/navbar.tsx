@@ -8,7 +8,7 @@ const Navbar = () => {
         <Link href="/">RF Next Starter</Link>
       </div>
       <div className="flex items-center gap-4">
-        <Link href="#">Blog</Link>
+        <Link href="/pricing">Pricing</Link>
         <Link href="#">About</Link>
         <Link href="#">Contact</Link>
         <ModeToggle />
