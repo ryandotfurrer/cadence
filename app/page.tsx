@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { Greeting } from "@/components/Greeting";
 
 export default function Home() {
   return (
@@ -60,9 +61,7 @@ function Content() {
   if (tasks.length === 0) {
     return (
       <>
-        <h2 className="mb-12 text-5xl font-bold tracking-tight">
-          Good Morning, {user?.firstName}
-        </h2>
+      <Greeting />
         <form onSubmit={handleSubmit} className="space-y-4">
           <Label htmlFor="task-title" className="sr-only">
             Task Title
@@ -92,9 +91,7 @@ function Content() {
 
   return (
     <>
-      <h2 className="mb-12 text-5xl font-bold tracking-tight">
-        Good Morning, {user?.firstName}
-      </h2>
+      <Greeting />
       <form onSubmit={handleSubmit} className="space-y-4">
         <Label htmlFor="task-title" className="sr-only">
           Task Title
