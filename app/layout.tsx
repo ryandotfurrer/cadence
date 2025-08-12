@@ -49,7 +49,7 @@ export default function RootLayout({
                   <Footer />
                 </ConvexClientProvider>
               </ClerkProvider>
-              <Toaster richColors />
+              <Toaster closeButton/>
             </div>
           </ThemeProvider>
         </div>
