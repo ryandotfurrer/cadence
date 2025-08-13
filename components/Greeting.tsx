@@ -11,7 +11,7 @@ const Greeting = () => {
 
   return (
     <hgroup className="py-4">
-      <h2 className="text-3xl font-bold">Good {timeOfDay}, {user?.firstName}</h2>
+      <h2 className="text-3xl font-cal">Good {timeOfDay}, {user?.firstName}</h2>
       <p className="text-muted-foreground">You have <span>{tasks?.length}</span> tasks due today</p>
     </hgroup>
   );
