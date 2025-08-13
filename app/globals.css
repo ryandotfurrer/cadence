@@ -130,7 +130,7 @@
 
 @layer base {
   * {
-    @apply border-border/50 outline-ring/50 scroll-smooth;
+    @apply border-border/50 outline-ring/50 scroll-smooth min-w-0;
   }
   body {
     @apply bg-background text-foreground leading-relaxed text-pretty antialiased font-inter;
