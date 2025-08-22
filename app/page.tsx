@@ -25,7 +25,9 @@ export default function Home() {
         <Content />
       </Authenticated>
       <Unauthenticated>
-        <SignInButton />
+        <Button asChild>
+          <SignInButton />
+        </Button>
       </Unauthenticated>
     </>
   );
