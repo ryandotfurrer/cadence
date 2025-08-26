@@ -8,9 +8,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RF Next Starter",
+  title: "Cadence",
   description:
-    "A minimal starter for Next.js projects that includes Next.js, Tailwind CSS, and shadcn/ui.",
+    "Track your habits, goals, and tasks with Cadence.",
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="container mx-auto flex max-w-screen-md flex-1 flex-col px-4">
+            <div className="container mx-auto flex flex-1 flex-col px-4">
               <ClerkProvider>
                 <ConvexClientProvider>
                   <Navbar />

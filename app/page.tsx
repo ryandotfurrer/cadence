@@ -125,8 +125,9 @@ function Content() {
           {tasks.map((task) => (
             <div key={task._id} className="flex items-center">
               <Button
+                asChild
                 variant="ghost"
-                className="flex h-auto items-center justify-start gap-2 p-2"
+                className="flex h-auto items-start justify-start gap-2 p-2 flex-1 whitespace-normal"
                 onClick={() => {
                   const newCompleted = !task.completed;
                   toggleTaskCompleted({
@@ -140,24 +141,8 @@ function Content() {
                   }
                 }}
               >
-                <Checkbox
-                  checked={task.completed}
-                  onCheckedChange={(checked) => {
-                    if (typeof checked === "boolean") {
-                      toggleTaskCompleted({
-                        taskId: task._id,
-                        completed: checked,
-                      });
-                      if (checked) {
-                        toast.success("Task complete");
-                      } else {
-                        toast.warning("Task incomplete");
-                      }
-                    }
-                  }}
-                />
                 <p
-                  className={cn(
+                  className={cn(" flex-1 break-words",
                     task.completed
                       ? "text-muted-foreground line-through"
                       : null,
