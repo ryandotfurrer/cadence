@@ -2,7 +2,6 @@
 
 import { Greeting } from "@/components/Greeting";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -14,7 +13,7 @@ import {
   useQuery,
 } from "convex/react";
 import { AudioWaveform, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { api } from "../convex/_generated/api";
 
@@ -80,6 +79,31 @@ function Content() {
   const tasks = useQuery(api.tasks.getForCurrentUser);
   const toggleTaskCompleted = useMutation(api.tasks.toggleTaskCompleted);
   const { user } = useUser();
+  
+  // Create audio refs that persist across renders
+  const completedTaskAudioRef = useRef<HTMLAudioElement | null>(null);
+  const incompletedTaskAudioRef = useRef<HTMLAudioElement | null>(null);
+  const deleteTaskAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize audio objects once when component mounts
+  useEffect(() => {
+    try {
+      completedTaskAudioRef.current = new Audio("/sounds/task-complete.mp3");
+      incompletedTaskAudioRef.current = new Audio("/sounds/task-incomplete.mp3");
+      deleteTaskAudioRef.current = new Audio("/sounds/task-delete.mp3");
+      
+      // Preload the audio files
+      completedTaskAudioRef.current.load();
+      incompletedTaskAudioRef.current.load();
+      deleteTaskAudioRef.current.load();
+    } catch (error) {
+      console.warn("Failed to initialize audio:", error);
+    }
+  }, []);
+
+  if (tasks === undefined) {
+    return <p>Loading...</p>;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,9 +118,54 @@ function Content() {
     setTaskDescription("");
   };
 
-  if (tasks === undefined) {
-    return <p>Loading...</p>;
-  }
+  const handleTaskCompleted = async (task: any) => {
+    const newCompleted = !task.completed;
+    await toggleTaskCompleted({
+      taskId: task._id,
+      completed: newCompleted,
+    });
+    
+    if (newCompleted) {
+      toast.success("Task complete");
+      // Play completion sound with error handling
+      try {
+        if (completedTaskAudioRef.current) {
+          completedTaskAudioRef.current.currentTime = 0;
+          await completedTaskAudioRef.current.play();
+        }
+      } catch (error) {
+        console.warn("Failed to play completion audio:", error);
+      }
+    } else {
+      toast.warning("Task incomplete");
+      // Play incompletion sound with error handling
+      try {
+        if (incompletedTaskAudioRef.current) {
+          incompletedTaskAudioRef.current.currentTime = 0;
+          await incompletedTaskAudioRef.current.play();
+        }
+      } catch (error) {
+        console.warn("Failed to play incompletion audio:", error);
+      }
+    }
+  };
+
+  const handleTaskDeleted = async (taskId: any) => {
+    await deleteTask({ taskId });
+    toast.error("Task deleted");
+    
+    // Play delete sound with error handling
+    try {
+      if (deleteTaskAudioRef.current) {
+        deleteTaskAudioRef.current.currentTime = 0;
+        await deleteTaskAudioRef.current.play();
+      }
+    } catch (error) {
+      console.warn("Failed to play delete audio:", error);
+    }
+  };
+
+
 
   return (
     <>
@@ -128,18 +197,7 @@ function Content() {
                 asChild
                 variant="ghost"
                 className="flex h-auto items-start justify-start gap-2 p-2 flex-1 whitespace-normal"
-                onClick={() => {
-                  const newCompleted = !task.completed;
-                  toggleTaskCompleted({
-                    taskId: task._id,
-                    completed: newCompleted,
-                  });
-                  if (newCompleted) {
-                    toast.success("Task complete");
-                  } else {
-                    toast.warning("Task incomplete");
-                  }
-                }}
+                onClick={() => handleTaskCompleted(task)}
               >
                 <p
                   className={cn(" flex-1 break-words",
@@ -153,10 +211,7 @@ function Content() {
               </Button>
               <Button
                 variant={"ghost"}
-                onClick={() => {
-                  deleteTask({ taskId: task._id });
-                  toast.error("Task deleted");
-                }}
+                onClick={() => handleTaskDeleted(task._id)}
                 className="group ml-auto"
                 size={"icon"}
               >
