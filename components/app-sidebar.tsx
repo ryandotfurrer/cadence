@@ -1,165 +1,222 @@
-"use client"
+import * as React from "react";
+import { ChevronRight } from "lucide-react";
 
-import * as React from "react"
+import { SearchForm } from "@/components/search-form";
+import { VersionSwitcher } from "@/components/version-switcher";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
-
-import { NavTasks } from "@/components/nav-tasks"
-import { NavLife } from "@/components/nav-life"
-import { NavUser } from "@/components/nav-user"
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { Link } from "./ui/link"
-import { useUser } from "@clerk/nextjs"
-
-
+} from "@/components/ui/sidebar";
+import { NavUser } from "./nav-user";
+import { ModeToggle } from "./mode-toggle";
 
 // This is sample data.
 const data = {
-  tasks: [
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  navMain: [
     {
-      title: "Playground",
+      title: "Getting Started",
       url: "#",
-      icon: SquareTerminal,
-      isActive: true,
       items: [
         {
-          title: "History",
+          title: "Installation",
           url: "#",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "Project Structure",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Building Your Application",
       url: "#",
-      icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Routing",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Data Fetching",
+          url: "#",
+          isActive: true,
+        },
+        {
+          title: "Rendering",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Caching",
+          url: "#",
+        },
+        {
+          title: "Styling",
+          url: "#",
+        },
+        {
+          title: "Optimizing",
+          url: "#",
+        },
+        {
+          title: "Configuring",
+          url: "#",
+        },
+        {
+          title: "Testing",
+          url: "#",
+        },
+        {
+          title: "Authentication",
+          url: "#",
+        },
+        {
+          title: "Deploying",
+          url: "#",
+        },
+        {
+          title: "Upgrading",
+          url: "#",
+        },
+        {
+          title: "Examples",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "API Reference",
       url: "#",
-      icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "Components",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "File Conventions",
           url: "#",
         },
         {
-          title: "Tutorials",
+          title: "Functions",
           url: "#",
         },
         {
-          title: "Changelog",
+          title: "next.config.js Options",
+          url: "#",
+        },
+        {
+          title: "CLI",
+          url: "#",
+        },
+        {
+          title: "Edge Runtime",
           url: "#",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Architecture",
       url: "#",
-      icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "Accessibility",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Fast Refresh",
           url: "#",
         },
         {
-          title: "Billing",
+          title: "Next.js Compiler",
           url: "#",
         },
         {
-          title: "Limits",
+          title: "Supported Browsers",
+          url: "#",
+        },
+        {
+          title: "Turbopack",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Community",
+      url: "#",
+      items: [
+        {
+          title: "Contribution Guide",
           url: "#",
         },
       ],
     },
   ],
-  life: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser()
-  const userData = user;
-
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
-          <Link
-            href="/"
-            className="font-cal group flex items-center gap-2 text-2xl !no-underline"
-          >
-            <AudioWaveform className="size-6 transition-colors group-hover:text-orange-500" />
-            Cadence
-          </Link>
+        <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        />
+        <SearchForm />
       </SidebarHeader>
-      <SidebarContent>
-        <NavTasks tasks={data.tasks} />
-        <NavLife life={data.life} />
+      <SidebarContent className="gap-0">
+        {/* We create a collapsible SidebarGroup for each parent. */}
+        {data.navMain.map((item) => (
+          <Collapsible
+            key={item.title}
+            title={item.title}
+            defaultOpen
+            className="group/collapsible"
+          >
+            <SidebarGroup>
+              <SidebarGroupLabel
+                asChild
+                className="group/label text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sm"
+              >
+                <CollapsibleTrigger>
+                  {item.title}{" "}
+                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {item.items.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild isActive={item.isActive}>
+                          <a href={item.url}>{item.title}</a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        ))}
       </SidebarContent>
+      <SidebarRail />
       <SidebarFooter>
+        <ModeToggle className="self-end" />
         <NavUser />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
-  )
+  );
 }

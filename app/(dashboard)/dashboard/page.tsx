@@ -1,9 +1,9 @@
+"use client"
 
+import { Greeting } from "@/components/Greeting"
 
-export default function DashboardHomePage() {
+export default function Page() {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <Greeting />
   )
 }
