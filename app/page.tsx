@@ -88,9 +88,9 @@ function Content() {
   // Initialize audio objects once when component mounts
   useEffect(() => {
     try {
-      completedTaskAudioRef.current = new Audio("/sounds/task-complete.mp3");
-      incompletedTaskAudioRef.current = new Audio("/sounds/task-incomplete.mp3");
-      deleteTaskAudioRef.current = new Audio("/sounds/task-delete.mp3");
+      completedTaskAudioRef.current = new Audio("/assets/sounds/task-complete.mp3");
+      incompletedTaskAudioRef.current = new Audio("/assets/sounds/task-incomplete.mp3");
+      deleteTaskAudioRef.current = new Audio("/assets/sounds/task-delete.mp3");
       
       // Preload the audio files
       completedTaskAudioRef.current.load();
@@ -196,7 +196,7 @@ function Content() {
               <Button
                 asChild
                 variant="ghost"
-                className="flex h-auto items-start justify-start gap-2 p-2 flex-1 whitespace-normal"
+                className="flex h-auto items-start justify-start gap-2 p-2 flex-1 whitespace-normal cursor-pointer"
                 onClick={() => handleTaskCompleted(task)}
               >
                 <p
