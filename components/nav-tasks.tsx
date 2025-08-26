@@ -18,10 +18,10 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
+export function NavTasks({
+  tasks,
 }: {
-  items: {
+  tasks: {
     title: string
     url: string
     icon?: LucideIcon
@@ -34,9 +34,9 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Tasks</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {tasks.map((item) => (
           <Collapsible
             key={item.title}
             asChild

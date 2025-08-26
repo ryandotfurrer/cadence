@@ -14,10 +14,9 @@ import {
   SquareTerminal,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
+import { NavTasks } from "@/components/nav-tasks"
+import { NavLife } from "@/components/nav-life"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -25,32 +24,14 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Link } from "./ui/link"
+import { useUser } from "@clerk/nextjs"
+
+
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
+  tasks: [
     {
       title: "Playground",
       url: "#",
@@ -137,7 +118,7 @@ const data = {
       ],
     },
   ],
-  projects: [
+  life: [
     {
       name: "Design Engineering",
       url: "#",
@@ -157,17 +138,26 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser()
+  const userData = user;
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+          <Link
+            href="/"
+            className="font-cal group flex items-center gap-2 text-2xl !no-underline"
+          >
+            <AudioWaveform className="size-6 transition-colors group-hover:text-orange-500" />
+            Cadence
+          </Link>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavTasks tasks={data.tasks} />
+        <NavLife life={data.life} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

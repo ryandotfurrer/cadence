@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
   Authenticated,
   Unauthenticated,
@@ -21,6 +21,9 @@ export default function Home() {
   return (
     <>
       <Authenticated>
+        <Button asChild>
+          <SignOutButton />
+        </Button>
         <Content />
       </Authenticated>
       <Unauthenticated>
@@ -88,9 +91,9 @@ function Content() {
   // Initialize audio objects once when component mounts
   useEffect(() => {
     try {
-      completedTaskAudioRef.current = new Audio("/assets/sounds/task-complete.mp3");
-      incompletedTaskAudioRef.current = new Audio("/assets/sounds/task-incomplete.mp3");
-      deleteTaskAudioRef.current = new Audio("/assets/sounds/task-delete.mp3");
+      completedTaskAudioRef.current = new Audio("/public/assets/sounds/task-complete.mp3");
+      incompletedTaskAudioRef.current = new Audio("/public/assets/sounds/task-incomplete.mp3");
+      deleteTaskAudioRef.current = new Audio("/public/assets/sounds/task-delete.mp3");
       
       // Preload the audio files
       completedTaskAudioRef.current.load();
