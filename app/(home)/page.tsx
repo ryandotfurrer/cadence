@@ -15,7 +15,7 @@ import {
 import { AudioWaveform, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
-import { api } from "../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 
 export default function Home() {
   return (
@@ -27,6 +27,7 @@ export default function Home() {
         <Content />
       </Authenticated>
       <Unauthenticated>
+        <p>You're not signed in.</p>
         <Button asChild>
           <SignInButton />
         </Button>

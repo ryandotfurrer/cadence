@@ -1,6 +1,5 @@
 import ConvexClientProvider from "@/components/ConvexClientProvider";
-import { Footer } from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import { ConditionalLayout } from "@/components/conditional-layout";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -33,12 +32,10 @@ export default function RootLayout({
             <div className="container mx-auto flex flex-1 flex-col px-4">
               <ClerkProvider>
                 <ConvexClientProvider>
-                  <Navbar />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
+                  <ConditionalLayout>{children}</ConditionalLayout>
+                  <Toaster closeButton/>
                 </ConvexClientProvider>
               </ClerkProvider>
-              <Toaster closeButton/>
             </div>
           </ThemeProvider>
         </div>
