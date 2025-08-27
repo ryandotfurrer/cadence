@@ -1,16 +1,33 @@
 import { useUser } from "@clerk/nextjs";
-import { getTimeOfDay } from "@/lib/utils";
+import { useUserContext } from "./user-context";
 
-const Greeting = () => {
-  const { user } = useUser();
-  const timeOfDay = getTimeOfDay();
+export function Greeting() {
+  // Always call hooks at the top level
+  const { user: clerkUser } = useUser();
+  const context = useUserContext();
   
+  // Determine which user data to use
+  const user = context?.user || clerkUser;
+  
+  if (!user) return null;
+
+  const now = new Date();
+  const hour = now.getHours();
+  let greeting = "";
+
+  if (hour < 12) {
+    greeting = "Good morning";
+  } else if (hour < 18) {
+    greeting = "Good afternoon";
+  } else {
+    greeting = "Good evening";
+  }
+
+  const firstName = user.firstName || "there";
 
   return (
-    <hgroup className="py-4">
-      <h2 className="text-3xl font-cal">Good {timeOfDay}, {user?.firstName}</h2>
-    </hgroup>
+    <h1 className="text-4xl py-4 font-cal">
+      {greeting}, {firstName}!
+    </h1>
   );
-};
-
-export {Greeting}
+}

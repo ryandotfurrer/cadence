@@ -4,9 +4,7 @@ import {
   Calendar, 
   Inbox, 
   Target, 
-  Repeat, 
   Heart, 
-  BarChart3, 
   CalendarDays,
   List,
   RefreshCw,
@@ -16,9 +14,6 @@ import {
   AudioWaveform
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-
-import { SearchForm } from "@/components/search-form";
-import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Collapsible,
   CollapsibleContent,
@@ -41,7 +36,7 @@ import {
 import { NavUser } from "./nav-user";
 import { ModeToggle } from "./mode-toggle";
 import { Link } from "./ui/link";
-import { cn } from "@/lib/utils";
+
 
 // This is sample data.
 const data = {
@@ -135,7 +130,7 @@ const getIcon = (iconName: string) => {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-  const { setOpen, setOpenMobile, isMobile } = useSidebar();
+  const { setOpenMobile, isMobile } = useSidebar();
 
   // Function to check if a navigation item is active
   const isItemActive = (itemUrl: string) => {
@@ -158,7 +153,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props} variant="sidebar">
       <SidebarHeader className="">
           <Link
-            href="/dashboard"
+            href="/"
             className="font-cal flex items-center gap-2 py-4 px-2 text-2xl !no-underline"
           >
             <AudioWaveform className="size-6 text-orange-500" />

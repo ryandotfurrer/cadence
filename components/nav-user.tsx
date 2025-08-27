@@ -8,7 +8,7 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
-import { useUser, SignOutButton } from "@clerk/nextjs"
+import { SignOutButton } from "@clerk/nextjs"
 
 import {
   Avatar,
@@ -30,12 +30,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useUserContext } from "./user-context"
 
 export function NavUser() {
-  const { user, isLoaded } = useUser()
+  const { user, isLoaded } = useUserContext()
   const { isMobile } = useSidebar()
 
-  // Show loading state while Clerk is loading user data
+  // Show loading state while user context is loading
   if (!isLoaded) {
     return (
       <SidebarMenu>

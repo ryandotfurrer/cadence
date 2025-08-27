@@ -2,7 +2,7 @@ import { Link } from "./ui/link";
 
 const Footer = () => {
   return (
-    <footer className="mt-12 flex items-center justify-between border-t">
+    <footer className="mt-12 flex items-center justify-between border-t px-4">
       <div className="flex items-center justify-between pt-4 pb-8">
         <span>
           Made by{" "}
