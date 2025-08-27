@@ -29,7 +29,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="container mx-auto flex flex-1 flex-col px-4">
+            <div>
               <ClerkProvider>
                 <ConvexClientProvider>
                   <ConditionalLayout>{children}</ConditionalLayout>

@@ -62,7 +62,7 @@ export function DynamicBreadcrumbs() {
       <BreadcrumbList>
         {breadcrumbs.map((breadcrumb, index) => (
           <React.Fragment key={breadcrumb.href}>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem>
               {breadcrumb.isCurrent ? (
                 <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
               ) : (
@@ -72,7 +72,7 @@ export function DynamicBreadcrumbs() {
               )}
             </BreadcrumbItem>
             {index < breadcrumbs.length - 1 && (
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator />
             )}
           </React.Fragment>
         ))}

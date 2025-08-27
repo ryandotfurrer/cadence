@@ -11,7 +11,8 @@ import {
   List,
   RefreshCw,
   Smile,
-  ChartLine
+  ChartLine,
+  Home
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -39,6 +40,7 @@ import {
 import { NavUser } from "./nav-user";
 import { ModeToggle } from "./mode-toggle";
 import { Link } from "./ui/link";
+import { cn } from "@/lib/utils";
 
 // This is sample data.
 const data = {
@@ -139,6 +141,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return pathname === itemUrl || pathname.startsWith(itemUrl + '/');
   };
 
+  // Function to check if home link is active (only exact match)
+  const isHomeActive = () => {
+    return pathname === "/dashboard";
+  };
+
   // Function to handle link clicks and close sidebar
   const handleLinkClick = () => {
     if (isMobile) {
@@ -153,7 +160,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           versions={data.versions}
           defaultVersion={data.versions[0]}
         />
-        <SearchForm />
+        
+        <SidebarMenuButton asChild isActive={isHomeActive()}>
+          <Link href="/dashboard" className="flex items-center gap-2 !no-underline" onClick={handleLinkClick}>
+            <Home className="size-4" />
+            Home
+          </Link>
+        </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent className="gap-0">
         {/* We create a collapsible SidebarGroup for each parent. */}

@@ -92,9 +92,9 @@ function Content() {
   // Initialize audio objects once when component mounts
   useEffect(() => {
     try {
-      completedTaskAudioRef.current = new Audio("/public/assets/sounds/task-complete.mp3");
-      incompletedTaskAudioRef.current = new Audio("/public/assets/sounds/task-incomplete.mp3");
-      deleteTaskAudioRef.current = new Audio("/public/assets/sounds/task-delete.mp3");
+      completedTaskAudioRef.current = new Audio("/assets/sounds/task-complete.mp3");
+      incompletedTaskAudioRef.current = new Audio("/assets/sounds/task-incomplete.mp3");
+      deleteTaskAudioRef.current = new Audio("/assets/sounds/task-delete.mp3");
       
       // Preload the audio files
       completedTaskAudioRef.current.load();
@@ -172,7 +172,7 @@ function Content() {
 
 
   return (
-    <>
+    <div className="container mx-auto flex flex-1 flex-col px-4">
       <Greeting />
       <TaskForm
         taskTitle={taskTitle}
@@ -225,6 +225,6 @@ function Content() {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

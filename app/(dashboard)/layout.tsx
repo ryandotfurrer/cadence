@@ -23,7 +23,7 @@ export default function DashboardRouteGroupLayout({
           <Separator orientation="vertical" className="mr-2 h-4" />
           <DynamicBreadcrumbs />
         </header>
-        <main>{children}</main>
+        <main className="px-4 mx-auto w-full">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
