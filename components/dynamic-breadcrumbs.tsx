@@ -21,7 +21,7 @@ export function DynamicBreadcrumbs() {
 
     // Always start with Dashboard
     breadcrumbs.push({
-      label: "Dashboard",
+      label: "Home",
       href: "/dashboard",
       isCurrent: segments.length === 1 && segments[0] === "dashboard"
     });

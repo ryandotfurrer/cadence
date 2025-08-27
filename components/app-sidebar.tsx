@@ -12,7 +12,8 @@ import {
   RefreshCw,
   Smile,
   ChartLine,
-  Home
+  Home,
+  AudioWaveform
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -154,12 +155,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
+    <Sidebar {...props} variant="sidebar">
+      <SidebarHeader className="">
+          <Link
+            href="/dashboard"
+            className="font-cal flex items-center gap-2 py-4 px-2 text-2xl !no-underline"
+          >
+            <AudioWaveform className="size-6 text-orange-500" />
+            Cadence
+          </Link>
         
         <SidebarMenuButton asChild isActive={isHomeActive()}>
           <Link href="/dashboard" className="flex items-center gap-2 !no-underline" onClick={handleLinkClick}>
