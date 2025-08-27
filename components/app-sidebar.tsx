@@ -34,6 +34,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { ModeToggle } from "./mode-toggle";
@@ -131,10 +132,18 @@ const getIcon = (iconName: string) => {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { setOpen, setOpenMobile, isMobile } = useSidebar();
 
   // Function to check if a navigation item is active
   const isItemActive = (itemUrl: string) => {
     return pathname === itemUrl || pathname.startsWith(itemUrl + '/');
+  };
+
+  // Function to handle link clicks and close sidebar
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
   };
 
   return (
@@ -171,7 +180,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={isItemActive(item.url)}>
-                          <Link href={item.url} className="flex items-center gap-2 !no-underline">
+                          <Link href={item.url} className="flex items-center gap-2 !no-underline" onClick={handleLinkClick}>
                             {getIcon(item.icon)}
                             {item.title}
                           </Link>
