@@ -1,5 +1,19 @@
 import * as React from "react";
-import { ChevronRight } from "lucide-react";
+import { 
+  ChevronRight, 
+  Calendar, 
+  Inbox, 
+  Target, 
+  Repeat, 
+  Heart, 
+  BarChart3, 
+  CalendarDays,
+  List,
+  RefreshCw,
+  Smile,
+  ChartLine
+} from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import { SearchForm } from "@/components/search-form";
 import { VersionSwitcher } from "@/components/version-switcher";
@@ -23,150 +37,106 @@ import {
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
 import { ModeToggle } from "./mode-toggle";
+import { Link } from "./ui/link";
 
 // This is sample data.
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Getting Started",
-      url: "#",
+      title: "Tasks",
+      url: "/dashboard/tasks",
       items: [
         {
-          title: "Installation",
-          url: "#",
+          title: "Today",
+          url: "/dashboard/tasks/today",
+          icon: "calendar",
         },
         {
-          title: "Project Structure",
-          url: "#",
+          title: "Inbox",
+          url: "/dashboard/tasks/inbox",
+          icon: "inbox"
+        },
+        {
+          title: "Upcoming",
+          url: "/dashboard/tasks/upcoming",
+          icon: "calendar-days"
+        },
+        {
+          title: "All Tasks",
+          url: "/dashboard/tasks/all-tasks",
+          icon: "list"
         },
       ],
     },
     {
-      title: "Building Your Application",
-      url: "#",
+      title: "Life",
+      url: "/dashboard/life",
       items: [
         {
-          title: "Routing",
-          url: "#",
+          title: "Areas",
+          url: "/dashboard/life/areas",
+          icon: "heart"
         },
         {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
+          title: "Goals ",
+          url: "/dashboard/life/goals",
+          icon: "target"
         },
         {
-          title: "Rendering",
-          url: "#",
+          title: "Habits",
+          url: "/dashboard/life/habits",
+          icon: "refresh-cw"
         },
         {
-          title: "Caching",
-          url: "#",
+          title: "Mood",
+          url: "/dashboard/life/mood",
+          icon: "smile"
         },
         {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
-          url: "#",
+          title: "Insights",
+          url: "/dashboard/life/insights",
+          icon: "chart-line"
         },
       ],
     },
   ],
 };
 
+// Icon mapping function
+const getIcon = (iconName: string) => {
+  switch (iconName) {
+    case "calendar":
+      return <Calendar className="size-4" />;
+    case "calendar-days":
+      return <CalendarDays className="size-4" />;
+    case "inbox":
+      return <Inbox className="size-4" />;
+    case "target":
+      return <Target className="size-4" />;
+    case "refresh-cw":
+      return <RefreshCw className="size-4" />;
+    case "smile":
+      return <Smile className="size-4" />;
+    case "chart-line":
+      return <ChartLine className="size-4" />;
+    case "list":
+      return <List className="size-4" />;
+    case "heart":
+      return <Heart className="size-4" />;
+    default:
+      return null;
+  }
+};
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
+  // Function to check if a navigation item is active
+  const isItemActive = (itemUrl: string) => {
+    return pathname === itemUrl || pathname.startsWith(itemUrl + '/');
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -200,8 +170,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenu>
                     {item.items.map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
+                        <SidebarMenuButton asChild isActive={isItemActive(item.url)}>
+                          <Link href={item.url} className="flex items-center gap-2 !no-underline">
+                            {getIcon(item.icon)}
+                            {item.title}
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
