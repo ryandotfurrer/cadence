@@ -8,5 +8,6 @@ export default defineSchema({
     taskDescription: v.optional(v.string()),
     completed: v.boolean(),
     completionTime: v.optional(v.number()),
+    dueDate: v.optional(v.number()),
   }).index("byUserId", ["userId"]),
 });
