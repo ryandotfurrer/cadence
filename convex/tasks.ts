@@ -29,6 +29,7 @@ export const createTask = mutation({
       taskTitle: args.taskTitle,
       taskDescription: args.taskDescription,
       completed: args.completed,
+      completionTime: args.completed ? Date.now() : undefined,
     });
     return newTaskId;
   },
@@ -51,6 +52,7 @@ export const toggleTaskCompleted = mutation({
   handler: async (ctx, { taskId, completed }) => {
     await ctx.db.patch(taskId, {
       completed,
+      completionTime: completed ? Date.now() : undefined,
     });
   },
 });

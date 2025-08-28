@@ -2,6 +2,7 @@
 
 import { TaskForm } from "@/components/task-form";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useUserContext } from "@/components/user-context";
 import { useMutation, useQuery } from "convex/react";
@@ -22,6 +23,28 @@ export default function AllTasksPage() {
   
   // Query tasks - authentication is guaranteed by AuthGuard
   const tasks = useQuery(api.tasks.getForCurrentUser, {});
+  
+  // Helper function to check if a task was completed today or later
+  const isCompletedTodayOrLater = (task: Doc<"tasks">) => {
+    if (!task.completed || !task.completionTime) return false;
+    const taskDate = new Date(task.completionTime);
+    const today = new Date();
+    
+    // Set both dates to start of day for accurate comparison
+    const taskStartOfDay = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
+    const todayStartOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    // Task is "current" if completed today or later (future dates would be included)
+    return taskStartOfDay >= todayStartOfDay;
+  };
+
+  // Filter tasks based on completion status and date
+  const currentTasks = tasks?.filter((task) => 
+    !task.completed || isCompletedTodayOrLater(task)
+  );
+  const previousTasks = tasks?.filter((task) => 
+    task.completed && !isCompletedTodayOrLater(task)
+  );
   
   const toggleTaskCompleted = useMutation(api.tasks.toggleTaskCompleted);
   
@@ -136,6 +159,54 @@ export default function AllTasksPage() {
     }
   };
 
+  // Helper function to render task list
+  const renderTaskList = (taskList: Doc<"tasks">[] | undefined, emptyMessage: string) => {
+    if (!taskList || taskList.length === 0) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <div className="flex flex-col items-center">
+            <AudioWaveform className="text-muted mx-auto size-32 mb-4" />
+            <p className="text-muted-foreground text-lg font-semibold">
+              {emptyMessage}
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        {taskList.map((task) => (
+          <div key={task._id} className="flex items-center p-3">
+            <Button
+              asChild
+              variant="ghost"
+              className="flex justify-start flex-1 whitespace-normal cursor-pointer "
+              onClick={() => handleTaskCompleted(task)}
+            >
+              <p
+                className={cn(
+                  "flex-1 break-words",
+                  task.completed && "text-muted-foreground line-through"
+                )}
+              >
+                {task.taskTitle}
+              </p>
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => handleTaskDeleted(task._id)}
+              className="group ml-auto hover:bg-destructive/10"
+              size="icon"
+            >
+              <Trash2 className="group-hover:text-destructive size-4" />
+            </Button>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="py-4">
       <h2 className="text-3xl font-cal mb-6">All Tasks</h2>
@@ -148,46 +219,30 @@ export default function AllTasksPage() {
         />
       </div>
 
-      {tasks.length === 0 ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="flex flex-col items-center">
-            <AudioWaveform className="text-muted mx-auto size-32 mb-4" />
-            <p className="text-muted-foreground text-lg font-semibold">
-              Woohoo! You've completed all your tasks
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {tasks.map((task) => (
-            <div key={task._id} className="flex items-center p-3">
-              <Button
-                asChild
-                variant="ghost"
-                className="flex justify-start flex-1 whitespace-normal cursor-pointer "
-                onClick={() => handleTaskCompleted(task)}
-              >
-                <p
-                  className={cn(
-                    "flex-1 break-words",
-                    task.completed && "text-muted-foreground line-through"
-                  )}
-                >
-                  {task.taskTitle}
-                </p>
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => handleTaskDeleted(task._id)}
-                className="group ml-auto hover:bg-destructive/10"
-                size="icon"
-              >
-                <Trash2 className="group-hover:text-destructive size-4" />
-              </Button>
-            </div>
-          ))}
-        </div>
-      )}
+      <Tabs defaultValue="current" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="current">
+            Current Tasks
+          </TabsTrigger>
+          <TabsTrigger value="previous">
+            Past Tasks
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="current" className="mt-6">
+          {renderTaskList(
+            currentTasks, 
+            "No current tasks! Create one above or complete some tasks today."
+          )}
+        </TabsContent>
+        
+        <TabsContent value="previous" className="mt-6">
+          {renderTaskList(
+            previousTasks, 
+            "No past tasks completed yet. Keep up the great work!"
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
