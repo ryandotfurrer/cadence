@@ -8,6 +8,7 @@ interface TaskListProps {
   onTaskDeleted: (taskId: Doc<"tasks">["_id"]) => void;
   emptyMessage: string;
   showDeleteButton?: boolean;
+  showTaskDescription?: boolean;
 }
 
 export function TaskList({ 
@@ -15,7 +16,8 @@ export function TaskList({
   onTaskCompleted, 
   onTaskDeleted, 
   emptyMessage, 
-  showDeleteButton = true 
+  showDeleteButton = true,
+  showTaskDescription = true,
 }: TaskListProps) {
   if (!tasks || tasks.length === 0) {
     return (
@@ -39,6 +41,7 @@ export function TaskList({
           onCompleted={onTaskCompleted}
           onDeleted={onTaskDeleted}
           showDeleteButton={showDeleteButton}
+          showTaskDescription={showTaskDescription}
         />
       ))}
     </div>

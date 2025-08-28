@@ -52,19 +52,14 @@ const data = {
           icon: "calendar",
         },
         {
-          title: "Inbox",
-          url: "/dashboard/tasks/inbox",
-          icon: "inbox"
-        },
-        {
           title: "Upcoming",
           url: "/dashboard/tasks/upcoming",
           icon: "calendar-days"
         },
         {
-          title: "All Tasks",
-          url: "/dashboard/tasks/all-tasks",
-          icon: "list"
+          title: "Inbox",
+          url: "/dashboard/tasks/inbox",
+          icon: "inbox"
         },
       ],
     },

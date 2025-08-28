@@ -8,37 +8,46 @@ interface TaskItemProps {
   onCompleted: (task: Doc<"tasks">) => void;
   onDeleted: (taskId: Doc<"tasks">["_id"]) => void;
   showDeleteButton?: boolean;
+  showTaskDescription?: boolean;
 }
 
-export function TaskItem({ 
-  task, 
-  onCompleted, 
-  onDeleted, 
-  showDeleteButton = true 
+export function TaskItem({
+  task,
+  onCompleted,
+  onDeleted,
+  showDeleteButton = true,
+  showTaskDescription = true,
 }: TaskItemProps) {
   return (
     <div className="flex items-center p-3">
       <Button
         asChild
         variant="ghost"
-        className="flex justify-start flex-1 whitespace-normal cursor-pointer"
+        className="flex h-auto flex-1 cursor-pointer gap-0 justify-start whitespace-normal"
         onClick={() => onCompleted(task)}
       >
-        <p
-          className={cn(
-            "flex-1 break-words",
-            task.completed && "text-muted-foreground line-through"
+        <div className="grid">
+          <p
+            className={cn(
+              "flex-1 break-words",
+              task.completed && "text-muted-foreground line-through",
+            )}
+          >
+            {task.taskTitle}
+          </p>
+          {showTaskDescription && (
+            <p className="text-muted-foreground text-sm font-normal line-clamp-1">
+              {task.taskDescription}
+            </p>
           )}
-        >
-          {task.taskTitle}
-        </p>
+        </div>
       </Button>
-      
+
       {showDeleteButton && (
         <Button
           variant="ghost"
           onClick={() => onDeleted(task._id)}
-          className="group ml-auto hover:bg-destructive/10"
+          className="group hover:bg-destructive/10 ml-auto"
           size="icon"
         >
           <Trash2 className="group-hover:text-destructive size-4" />
